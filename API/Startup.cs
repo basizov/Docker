@@ -1,31 +1,32 @@
+using API.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 
 namespace API
 {
   public class Startup
   {
-    public IConfiguration Configuration { get; }
+    private readonly IConfiguration _config;
 
-    public Startup(IConfiguration configuration) => Configuration = configuration;
+    public Startup(IConfiguration config) => _config = config;
 
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddControllers();
+      services.AddApplicationServices(_config);
+      services.AddIdentityServices(_config);
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
       app.UseRouting();
+      app.UseAuthentication();
       app.UseAuthorization();
-      app.UseEndpoints(endpoints =>
-      {
-        endpoints.MapControllers();
-      });
+      app.UseEndpoints(endpoints => endpoints.MapControllers());
     }
   }
 }

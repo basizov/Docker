@@ -18,7 +18,7 @@ namespace API
     {
       services.AddControllers();
       services.AddApplicationServices(_config);
-      services.AddIdentityServices(_config);
+      // services.AddIdentityServices(_config);
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
